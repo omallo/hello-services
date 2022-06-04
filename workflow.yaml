@@ -33,3 +33,4 @@ spec:
         image: maven:3.8.5-openjdk-17-slim
         command: [sh, -c]
         args: ["cd /src && mvn clean package"]
+      activeDeadlineSeconds: 120
