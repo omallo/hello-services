@@ -4,6 +4,7 @@ metadata:
   generateName: hello-services-ci-
 spec:
   entrypoint: main
+  activeDeadlineSeconds: 600
   templates:
     - name: main
       steps:
