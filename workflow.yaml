@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-services-ci-
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: checkout
+            template: git-checkout
+        - - name: build
+            template: maven-build
+            arguments:
+              artifacts:
+                - name: source
+                  from: "{{steps.checkout.outputs.artifacts.source}}"
+    - name: git-checkout
+      container:
+        image: alpine/git:v2.34.2
+        command: [sh, -c]
+        args: ["git clone https://github.com/omallo/hello-services.git /src"]
+      outputs:
+        artifacts:
+          - name: source
+            path: /src
+    - name: maven-build
+      inputs:
+        artifacts:
+          - name: source
+            path: /src
+      container:
+        image: maven:3.8.5-openjdk-17-slim
+        command: [sh, -c]
+        args: ["cd /src && mvn clean package"]
