@@ -5,6 +5,19 @@ metadata:
 spec:
   entrypoint: main
   activeDeadlineSeconds: 600
+  volumes:
+    - name: maven-repository
+      persistentVolumeClaim:
+        claimName: maven-repository-cache
+  volumeClaimTemplates:
+    - metadata:
+        name: shared-data
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 1Gi
   templates:
     - name: main
       steps:
@@ -46,6 +59,11 @@ spec:
               secretKeyRef:
                 name: "{{inputs.parameters.registry-credentials-secret-name}}"
                 key: password
+        volumeMounts:
+          - name: maven-repository
+            mountPath: /root/.m2
+          - name: shared-data
+            mountPath: /data
         command: [sh, -c]
         args: ["cd /src && mvn clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
       activeDeadlineSeconds: 240
