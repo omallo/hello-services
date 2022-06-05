@@ -47,7 +47,7 @@ spec:
           - name: source
             path: /src
       container:
-        image: maven:3.8.5-openjdk-17-slim
+        image: openjdk:17-alpine3.14
         env:
           - name: REGISTRY_USERNAME
             valueFrom:
@@ -65,5 +65,5 @@ spec:
           - name: shared-data
             mountPath: /data
         command: [sh, -c]
-        args: ["cd /src && mvn clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
+        args: ["cd /src && ./mvnw clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
       activeDeadlineSeconds: 240
