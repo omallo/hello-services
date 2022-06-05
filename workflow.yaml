@@ -27,6 +27,9 @@ spec:
             path: /src
     - name: maven-build
       inputs:
+        parameters:
+          - name: registry-credentials-secret-name
+            default: registry-credentials
         artifacts:
           - name: source
             path: /src
@@ -36,12 +39,12 @@ spec:
           - name: REGISTRY_USERNAME
             valueFrom:
               secretKeyRef:
-                name: registry-credentials
+                name: "{{inputs.parameters.registry-credentials-secret-name}}"
                 key: username
           - name: REGISTRY_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: registry-credentials
+                name: "{{inputs.parameters.registry-credentials-secret-name}}"
                 key: password
         command: [sh, -c]
         args: ["cd /src && mvn clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
