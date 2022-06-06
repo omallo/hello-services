@@ -80,7 +80,7 @@ spec:
             mountPath: /root/.m2
           - name: shared-data
             mountPath: /data
-        workingDir: /src
+        workingDir: "{{inputs.artifacts.source.path}}"
         command: [sh, -c]
         args: ["./mvnw clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
     - name: kaniko-build
@@ -93,4 +93,4 @@ spec:
         volumeMounts:
           - name: docker-credentials
             mountPath: /kaniko/.docker
-        args: ["--context=/src/", "--destination=docker.io/omallo/hello-services"]
+        args: ["--context={{inputs.artifacts.source.path}}", "--destination=docker.io/omallo/hello-services"]
