@@ -35,20 +35,30 @@ spec:
               artifacts:
                 - name: source
                   from: "{{steps.checkout.outputs.artifacts.source}}"
+        - - name: build2
+            template: kaniko-build
+            arguments:
+              artifacts:
+                - name: source
+                  from: "{{steps.build.outputs.artifacts.source}}"
     - name: git-checkout
-      container:
-        image: alpine/git:v2.34.2
-        command: [sh, -c]
-        args: ["git clone https://github.com/omallo/hello-services.git /src"]
       outputs:
         artifacts:
           - name: source
             path: /src
+      container:
+        image: alpine/git:v2.34.2
+        command: [sh, -c]
+        args: ["git clone https://github.com/omallo/hello-services.git /src"]
     - name: maven-build
       inputs:
         parameters:
           - name: registry-credentials-secret-name
             default: registry-credentials
+        artifacts:
+          - name: source
+            path: /src
+      outputs:
         artifacts:
           - name: source
             path: /src
