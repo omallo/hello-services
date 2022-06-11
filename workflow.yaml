@@ -40,10 +40,6 @@ spec:
         command: [sh, -c]
         args: ["git clone https://github.com/omallo/hello-services.git /workspace"]
     - name: maven-build
-      inputs:
-        parameters:
-          - name: registry-credentials-secret-name
-            default: registry-credentials
       container:
         image: openjdk:17-alpine3.14
         volumeMounts:
