@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: silly-
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+spec:
+  entrypoint: silly
+  templates:
+    - name: silly
+      steps:
+        - - name: hello-world
+            templateRef:
+              name: silly
+              template: bar
+            arguments:
+              parameters:
+                - name: message
+                  value: pinco-pallino

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: silly
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: invoke-foo
+            template: foo
+        - - name: invoke-bar
+            template: bar
+    - name: foo
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo foo"]
+    - name: bar
+      inputs:
+        parameters:
+          - name: message
+            default: basinga
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo bar {{inputs.parameters.message}}"]
