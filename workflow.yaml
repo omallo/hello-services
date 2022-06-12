@@ -52,3 +52,12 @@ spec:
         workingDir: /workspace
         command: [sh, -c]
         args: ["./mvnw clean package jib:build"]
+    - name: kaniko-build
+      container:
+        image: gcr.io/kaniko-project/executor
+        volumeMounts:
+          - name: docker-credentials
+            mountPath: /kaniko/.docker
+          - name: workspace
+            mountPath: /workspace
+        args: ["--context=/workspace", "--destination=docker.io/omallo/hello-services"]
