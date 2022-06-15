@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: mycm
 data:
-  foo: bar
+  foo: bar2
