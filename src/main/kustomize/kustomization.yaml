@@ -6,6 +6,10 @@ commonLabels:
 resources:
   - deployment.yaml
   - service.yaml
+configMapGenerator:
+  - name: cm-env
+    literals:
+      - GREETING=hello there
 replicas:
   - name: dpl
     count: 1

@@ -10,6 +10,13 @@ spec:
         - name: main
           image: dpl-img
           imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: cm-env
+                optional: true
+            - secretRef:
+                name: sec-env
+                optional: true
           ports:
             - containerPort: 8080
           startupProbe:
