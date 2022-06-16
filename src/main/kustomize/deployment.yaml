@@ -1,19 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello
+  name: dpl
 spec:
-  selector:
-    matchLabels:
-      name: hello
+  selector: {}
   template:
-    metadata:
-      labels:
-        name: hello
     spec:
       containers:
-        - name: hello
-          image: docker.io/omallo/hello-services
+        - name: main
+          image: dpl-img
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
