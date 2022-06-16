@@ -1,2 +1,10 @@
+commonLabels:
+  app: hello
+
 resources:
-  - test.yaml
+  - deployment.yaml
+  - service.yaml
+
+images:
+  - name: docker.io/omallo/hello-services
+    newTag: latest
