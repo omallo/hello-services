@@ -15,10 +15,6 @@ spec:
           configMap:
             name: sec-vol
             optional: true
-        - name: pvc-vol
-          persistentVolumeClaim:
-            claimName: pvc-vol
-            optional: true
       containers:
         - name: main
           image: dpl-img
@@ -37,9 +33,6 @@ spec:
               readOnly: true
             - name: sec-vol
               mountPath: /app/secrets
-              readOnly: true
-            - name: pvc-vol
-              mountPath: /app/data
               readOnly: true
           ports:
             - containerPort: 8080
