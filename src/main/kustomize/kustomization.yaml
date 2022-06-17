@@ -25,7 +25,7 @@ configMapGenerator:
 secretGenerator:
   - name: sec-vol
     literals:
-      - secret=s3cr3t
+      - secret=s3cr3t-from-vol
 replicas:
   - name: dpl
     count: 1
