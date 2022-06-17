@@ -3,6 +3,10 @@ kind: Kustomization
 namePrefix: hello-
 commonLabels:
   app: hello
+images:
+  - name: dpl-img
+    newName: docker.io/omallo/hello-services
+    newTag: latest
 resources:
   - deployment.yaml
   - service.yaml
@@ -11,17 +15,17 @@ generatorOptions:
 configMapGenerator:
   - name: cm-env
     literals:
-      - GREETING=Hello from ENV
+      - GREETING=Hello from ENV with secret '${secret}'
   - name: cm-vol
     literals:
       - |
         application.yaml=
-        greeting: Hello from VOL
+        greeting: Hello from VOL with secret '${secret}'
         spring.config.import: optional:configtree:/app/secrets/
+secretGenerator:
+  - name: sec-vol
+    literals:
+      - secret=s3cr3t
 replicas:
   - name: dpl
     count: 1
-images:
-  - name: dpl-img
-    newName: docker.io/omallo/hello-services
-    newTag: latest

@@ -12,8 +12,8 @@ spec:
             name: cm-vol
             optional: true
         - name: sec-vol
-          configMap:
-            name: sec-vol
+          secret:
+            secretName: sec-vol
             optional: true
       containers:
         - name: main
