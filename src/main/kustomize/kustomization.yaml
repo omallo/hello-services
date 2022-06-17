@@ -6,6 +6,8 @@ commonLabels:
 resources:
   - deployment.yaml
   - service.yaml
+generatorOptions:
+  immutable: true
 configMapGenerator:
   - name: cm-env
     literals:
