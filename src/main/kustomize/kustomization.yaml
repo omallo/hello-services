@@ -9,6 +9,7 @@ images:
     newTag: latest
 resources:
   - deployment.yaml
+  - ingress.yaml
   - service.yaml
 generatorOptions:
   immutable: true
