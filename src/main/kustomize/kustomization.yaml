@@ -9,7 +9,12 @@ resources:
 configMapGenerator:
   - name: cm-env
     literals:
-      - GREETING=hello there
+      - GREETING=Hello from ENV
+  - name: cm-vol
+    literals:
+      - |
+        application.yaml=
+        GREETING: Hello from VOL
 replicas:
   - name: dpl
     count: 1
