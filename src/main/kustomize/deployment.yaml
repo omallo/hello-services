@@ -6,10 +6,20 @@ spec:
   selector: {}
   template:
     spec:
+      volumes:
+        - name: cm-vol
+          configMap:
+            name: cm-vol
+            optional: true
+        - name: sec-vol
+          configMap:
+            name: sec-vol
+            optional: true
       containers:
         - name: main
           image: dpl-img
           imagePullPolicy: Always
+          workingDir: /app
           envFrom:
             - configMapRef:
                 name: cm-env
@@ -17,6 +27,13 @@ spec:
             - secretRef:
                 name: sec-env
                 optional: true
+          volumeMounts:
+            - name: cm-vol
+              mountPath: /app/config
+              readOnly: true
+            - name: sec-vol
+              mountPath: /app/secrets
+              readOnly: true
           ports:
             - containerPort: 8080
           startupProbe:
