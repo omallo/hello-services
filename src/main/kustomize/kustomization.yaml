@@ -14,7 +14,8 @@ configMapGenerator:
     literals:
       - |
         application.yaml=
-        GREETING: Hello from VOL
+        greeting: Hello from VOL
+        spring.config.import: optional:configtree:/app/secrets/
 replicas:
   - name: dpl
     count: 1
