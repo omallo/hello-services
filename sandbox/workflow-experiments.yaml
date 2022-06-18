@@ -1,0 +1,96 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-services-ci-
+spec:
+  entrypoint: main
+  activeDeadlineSeconds: 600
+  volumes:
+    - name: docker-credentials
+      secret:
+        secretName: docker-credentials
+        items:
+          - key: .dockerconfigjson
+            path: config.json
+    - name: maven-repository
+      persistentVolumeClaim:
+        claimName: maven-repository-cache
+  volumeClaimTemplates:
+    - metadata:
+        name: shared-data
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 1Gi
+  templates:
+    - name: main
+      steps:
+        - - name: checkout
+            template: git-checkout
+        - - name: build
+            template: maven-build
+            arguments:
+              artifacts:
+                - name: source
+                  from: "{{steps.checkout.outputs.artifacts.source}}"
+        - - name: build2
+            template: kaniko-build
+            arguments:
+              artifacts:
+                - name: source
+                  from: "{{steps.build.outputs.artifacts.source}}"
+    - name: git-checkout
+      outputs:
+        artifacts:
+          - name: source
+            path: /src
+      container:
+        image: alpine/git:v2.34.2
+        command: [sh, -c]
+        args: ["git clone https://github.com/omallo/hello-services.git /src"]
+    - name: maven-build
+      inputs:
+        parameters:
+          - name: registry-credentials-secret-name
+            default: registry-credentials
+        artifacts:
+          - name: source
+            path: /src
+      outputs:
+        artifacts:
+          - name: source
+            path: /src
+      container:
+        image: openjdk:17-alpine3.14
+        env:
+          - name: REGISTRY_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: "{{inputs.parameters.registry-credentials-secret-name}}"
+                key: username
+          - name: REGISTRY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: "{{inputs.parameters.registry-credentials-secret-name}}"
+                key: password
+        volumeMounts:
+          - name: maven-repository
+            mountPath: /root/.m2
+          - name: shared-data
+            mountPath: /data
+        workingDir: "{{inputs.artifacts.source.path}}"
+        command: [sh, -c]
+        args: ["./mvnw clean package jib:build -Djib.to.auth.username=$REGISTRY_USERNAME -Djib.to.auth.password=$REGISTRY_PASSWORD"]
+    - name: kaniko-build
+      inputs:
+        artifacts:
+          - name: source
+            path: /src
+      container:
+        image: gcr.io/kaniko-project/executor
+        volumeMounts:
+          - name: docker-credentials
+            mountPath: /kaniko/.docker
+        args: ["--context={{inputs.artifacts.source.path}}", "--destination=docker.io/omallo/hello-services"]

@@ -52,24 +52,3 @@ spec:
         workingDir: /workspace
         command: [sh, -c]
         args: ["./mvnw clean package jib:build --batch-mode"]
-    - name: kaniko-build
-      container:
-        image: gcr.io/kaniko-project/executor
-        volumeMounts:
-          - name: docker-credentials
-            mountPath: /kaniko/.docker
-          - name: workspace
-            mountPath: /workspace
-        args: ["--context=/workspace", "--destination=docker.io/omallo/hello-services"]
-    - name: buildpacks-build
-      container:
-        image: paketobuildpacks/builder:base
-        volumeMounts:
-          - name: docker-credentials
-            mountPath: /home/cnb/.docker
-          - name: maven-repository
-            mountPath: /home/cnb/.m2
-          - name: workspace
-            mountPath: /workspace
-        command: [/cnb/lifecycle/creator]
-        args: ["-app=/workspace", "docker.io/omallo/hello-services"]
