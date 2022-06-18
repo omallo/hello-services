@@ -16,17 +16,17 @@ generatorOptions:
 configMapGenerator:
   - name: cm-env
     literals:
-      - GREETING=Hello from ENV with secret '${secret}'
+      - HELLO_GREETING=Hello from ENV
   - name: cm-vol
     literals:
       - |
         application.yaml=
-        greeting: Hello from VOL with secret '${secret}'
+        hello.greeting: Hello from VOL
         spring.config.import: optional:configtree:/app/secrets/
 secretGenerator:
   - name: sec-vol
     literals:
-      - secret=s3cr3t-from-vol
+      - hello.secret=s3cr3t-from-vol
 replicas:
   - name: dpl
     count: 1
