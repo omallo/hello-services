@@ -3,7 +3,10 @@ kind: Kustomization
 namespace: hello-local
 resources:
   - ../base
+generatorOptions:
+  immutable: true
 configMapGenerator:
+  - name: foobar
   - name: hello-services-cm-env
     behavior: merge
     envs:
