@@ -6,13 +6,13 @@ resources:
 configMapGenerator:
   - name: hello-services-cm-env
     behavior: merge
-    literals:
-      - HELLO_GREETING=Hello from the LOCAL environment
+    envs:
+      - config.env
 secretGenerator:
   - name: hello-services-sec-env
     behavior: merge
-    literals:
-      - HELLO_SECRET=s3cr3t-local
+    envs:
+      - secrets.env
 patches:
   - target:
       group: networking.k8s.io
