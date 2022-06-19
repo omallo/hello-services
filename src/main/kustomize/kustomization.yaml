@@ -1,9 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: hello-local
-namePrefix: hello-
+namePrefix: hello-services-
 commonLabels:
-  app: hello
+  app: hello-services
 images:
   - name: dpl-img
     newName: docker.io/omallo/hello-services
