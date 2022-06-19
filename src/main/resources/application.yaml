@@ -1,1 +1,4 @@
 management.endpoints.web.exposure.include: "*"
+---
+spring.config.activate.on-cloud-platform: kubernetes
+spring.config.import: optional:configtree:/app/secrets/

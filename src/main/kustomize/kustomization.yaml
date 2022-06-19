@@ -22,7 +22,6 @@ configMapGenerator:
       - |
         application.yaml=
         hello.greeting: Hello from VOL
-        spring.config.import: optional:configtree:/app/secrets/
 secretGenerator:
   - name: sec-vol
     literals:
