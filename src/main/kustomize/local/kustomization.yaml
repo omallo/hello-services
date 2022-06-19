@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: hello-local
+resources:
+  - ../base
+configMapGenerator:
+  - name: hello-services-cm-env
+    behavior: merge
+    literals:
+      - HELLO_GREETING=Hello from the LOCAL environment
+secretGenerator:
+  - name: hello-services-sec-env
+    behavior: merge
+    literals:
+      - HELLO_SECRET=s3cr3t-local
+patches:
+  - target:
+      group: networking.k8s.io
+      version: v1
+      kind: Ingress
+      name: hello-services-ing
+    patch: |
+      - op: replace
+        path: /spec/rules/0/host
+        value: hello-services-local.192.168.64.35.nip.io

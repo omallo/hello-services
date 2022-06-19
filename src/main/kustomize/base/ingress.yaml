@@ -4,7 +4,7 @@ metadata:
   name: ing
 spec:
   rules:
-    - host: hello.192.168.64.35.nip.io
+    - host: replace.me
       http:
         paths:
           - pathType: Prefix

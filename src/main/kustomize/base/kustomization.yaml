@@ -15,17 +15,5 @@ generatorOptions:
   immutable: true
 configMapGenerator:
   - name: cm-env
-    literals:
-      - HELLO_GREETING=Hello from ENV
-  - name: cm-vol
-    literals:
-      - |
-        application.yaml=
-        hello.greeting: Hello from VOL
 secretGenerator:
-  - name: sec-vol
-    literals:
-      - hello.secret=s3cr3t-from-vol
-replicas:
-  - name: dpl
-    count: 1
+  - name: sec-env
