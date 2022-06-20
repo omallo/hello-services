@@ -31,6 +31,8 @@ spec:
             template: git-clone
         - - name: build
             template: maven-build
+        - - name: cd
+            template: update-cd-repo
     - name: git-clone
       container:
         image: alpine/git:v2.34.2
@@ -52,3 +54,26 @@ spec:
         workingDir: /workspace
         command: [sh, -c]
         args: ["./mvnw clean package jib:build --batch-mode"]
+    - name: update-cd-repo
+      script:
+        image: omallo/cicd-base:latest
+        volumeMounts:
+          - name: workspace
+            mountPath: /workspace
+        workingDir: /workspace
+        command: [sh]
+        source: |
+          GIT_COMMIT=$(git log -1 --pretty=format:"%H")
+          IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
+
+          git clone https://github.com/omallo/hello-services-cd.git /workspace-cd
+          cd /workspace-cd/dev
+
+          kustomize edit set image docker.io/omallo/hello-services=@$IMG_DIGEST
+
+          kustomize edit remove resource "github.com/omallo/hello-services/src/main/kustomize*"
+          kustomize edit add resource "github.com/omallo/hello-services/src/main/kustomize?ref=$GIT_COMMIT"
+
+          git add -A
+          git commit -m "update GIT_COMMIT=$GIT_COMMIT, IMG_DIGEST=$IMG_DIGEST"
+          git push
