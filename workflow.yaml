@@ -71,8 +71,8 @@ spec:
 
           kustomize edit set image docker.io/omallo/hello-services=@$IMG_DIGEST
 
-          kustomize edit remove resource "github.com/omallo/hello-services/src/main/kustomize*"
-          kustomize edit add resource "github.com/omallo/hello-services/src/main/kustomize?ref=$GIT_COMMIT"
+          kustomize edit remove resource "github.com/omallo/hello-services/src/main/kustomize/base*"
+          kustomize edit add resource "github.com/omallo/hello-services/src/main/kustomize/base?ref=$GIT_COMMIT"
 
           git add -A
           git commit -m "update GIT_COMMIT=$GIT_COMMIT, IMG_DIGEST=$IMG_DIGEST"
