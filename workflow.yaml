@@ -57,6 +57,9 @@ spec:
     - name: update-cd-repo
       script:
         image: omallo/cicd-base:latest
+        env:
+          - name: GITHUB_TOKEN
+            value:
         volumeMounts:
           - name: workspace
             mountPath: /workspace
@@ -66,7 +69,10 @@ spec:
           GIT_COMMIT=$(git log -1 --pretty=format:"%H")
           IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
 
-          git clone https://github.com/omallo/hello-services-cd.git /workspace-cd
+          git config --global user.name "CICD"
+          git config --global user.email "cicd@example.com"
+
+          git clone https://unused:${GITHUB_TOKEN}@github.com/omallo/hello-services-cd.git /workspace-cd
           cd /workspace-cd/dev
 
           kustomize edit set image docker.io/omallo/hello-services=@$IMG_DIGEST
@@ -75,5 +81,5 @@ spec:
           kustomize edit add resource "github.com/omallo/hello-services/src/main/kustomize/base?ref=$GIT_COMMIT"
 
           git add -A
-          git commit -m "update GIT_COMMIT=$GIT_COMMIT, IMG_DIGEST=$IMG_DIGEST"
+          git commit -m "update the deployment config for the dev environment"
           git push
