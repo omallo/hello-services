@@ -27,7 +27,7 @@ spec:
   templates:
     - name: main
       steps:
-        - - name: clone
+        - - name: checkout
             template: git-clone
         - - name: build
             template: maven-build
