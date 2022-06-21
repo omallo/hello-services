@@ -85,4 +85,4 @@ spec:
           git push
 
           argocd login --insecure --grpc-web argocd-server.argocd.svc.cluster.local --username admin --password password
-          argocd app sync hello-services-dev --timeout 120s
+          argocd app sync hello-services-dev --timeout 120
