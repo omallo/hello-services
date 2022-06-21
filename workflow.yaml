@@ -73,7 +73,7 @@ spec:
           GIT_COMMIT=$(git log -1 --pretty=format:"%H")
           IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
 
-          git config --global user.name "CICD"
+          git config --global user.name "cicd"
           git config --global user.email "cicd@example.com"
 
           git clone https://unused:${GITHUB_TOKEN}@github.com/omallo/hello-services-cd.git /workspace-cd
