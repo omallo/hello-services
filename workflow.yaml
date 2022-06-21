@@ -83,3 +83,6 @@ spec:
           git add -A
           git commit -m "update the deployment config for the dev environment"
           git push
+
+          argocd login --insecure --grpc-web argocd-server.argocd.svc.cluster.local --username admin --password password
+          argocd app sync hello-services-dev --timeout 120s
