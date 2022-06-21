@@ -31,8 +31,8 @@ spec:
             template: git-clone
         - - name: build
             template: maven-build
-        - - name: cd
-            template: update-cd-repo
+        - - name: deploy
+            template: argocd-deployment
     - name: git-clone
       container:
         image: alpine/git:v2.34.2
@@ -54,7 +54,7 @@ spec:
         workingDir: /workspace
         command: [sh, -c]
         args: ["./mvnw clean package jib:build --batch-mode"]
-    - name: update-cd-repo
+    - name: argocd-deployment
       script:
         image: omallo/cicd-base:latest
         env:
