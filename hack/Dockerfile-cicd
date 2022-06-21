@@ -1,6 +1,6 @@
 FROM alpine:3.16.0
 
-RUN apk add --update-cache bash git jq yq curl docker-cli \
+RUN apk add --update-cache bash git jq yq curl docker-cli github-cli \
   && rm -rf /var/cache/apk/* \
   && curl -sSL "https://storage.googleapis.com/kubernetes-release/release/v1.24.1/bin/linux/amd64/kubectl" -o /usr/local/bin/kubectl \
   && chmod +x /usr/local/bin/kubectl \
