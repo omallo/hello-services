@@ -60,6 +60,8 @@ spec:
         env:
           - name: GITHUB_TOKEN
             value:
+          - name: ARGOCD_AUTH_TOKEN
+            value:
         volumeMounts:
           - name: workspace
             mountPath: /workspace
