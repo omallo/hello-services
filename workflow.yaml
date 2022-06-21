@@ -66,6 +66,8 @@ spec:
         workingDir: /workspace
         command: [sh]
         source: |
+          set -x
+
           GIT_COMMIT=$(git log -1 --pretty=format:"%H")
           IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
 
@@ -86,3 +88,4 @@ spec:
 
           argocd login --insecure --grpc-web argocd-server.argocd.svc.cluster.local --username admin --password password
           argocd app sync hello-services-dev --timeout 120
+          argocd app wait hello-services-dev --timeout 120
