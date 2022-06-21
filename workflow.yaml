@@ -70,11 +70,11 @@ spec:
         source: |
           set -e
 
-          GIT_COMMIT=$(git log -1 --pretty=format:"%H")
-          IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
-
           git config --global user.name "cicd"
           git config --global user.email "cicd@example.com"
+
+          GIT_COMMIT=$(git log -1 --pretty=format:"%H")
+          IMG_DIGEST=$(crane digest docker.io/omallo/hello-services)
 
           git clone https://unused:${GITHUB_TOKEN}@github.com/omallo/hello-services-cd.git /workspace-cd
           cd /workspace-cd/dev
