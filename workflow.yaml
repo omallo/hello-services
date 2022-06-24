@@ -32,7 +32,7 @@ spec:
         - - name: build
             template: maven-build
         - - name: deploy
-            template: kustomize-deployment
+            template: kustomize-gitops-deployment
     - name: git-clone
       container:
         image: alpine/git:v2.34.2
@@ -54,7 +54,7 @@ spec:
         workingDir: /workspace
         command: [sh, -c]
         args: ["./mvnw clean package jib:build --batch-mode"]
-    - name: kustomize-deployment
+    - name: kustomize-gitops-deployment
       script:
         image: omallo/cicd-base:latest
         env:
