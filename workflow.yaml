@@ -88,7 +88,7 @@ spec:
           kustomize edit add resource "github.com/omallo/hello-services/src/main/kustomize/base?ref=$GIT_COMMIT"
 
           git add -A
-          git commit -m "update the deployment config for the dev environment"
+          git diff-index --quiet HEAD || git commit -m "update the deployment config for the dev environment"
           git push
 
           argocd login --insecure --grpc-web argocd-server.argocd.svc.cluster.local --username admin --password password
