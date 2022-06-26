@@ -71,7 +71,7 @@ spec:
         workingDir: /workspace
         command: [sh]
         source: |
-          set -e
+          set -eu -o pipefail
 
           git config --global user.name "cicd"
           git config --global user.email "cicd@example.com"
