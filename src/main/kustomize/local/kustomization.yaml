@@ -24,7 +24,7 @@ patches:
     patch: |
       - op: replace
         path: /spec/rules/0/host
-        value: hello-services-local.192.168.64.37.nip.io
+        value: hello-services-local.192.168.64.38.nip.io
 replicas:
   - name: hello-services-dpl
     count: 1
