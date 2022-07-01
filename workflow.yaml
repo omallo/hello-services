@@ -40,7 +40,7 @@ spec:
           - name: workspace
             mountPath: /workspace
         command: [sh, -c]
-        args: ["git clone https://github.com/omallo/hello-services.git /workspace"]
+        args: ["git clone --depth 1 --branch master https://github.com/omallo/hello-services.git /workspace"]
     - name: maven-build
       container:
         image: openjdk:17-alpine3.14
