@@ -1,6 +1,10 @@
 package io.staek.helloservices;
 
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +27,8 @@ public class HelloApplication {
   @GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
   public String greet(@Value("${hello.greeting:}") String greeting, @Value("${hello.secret:}") String secret) {
     StringBuilder sb = new StringBuilder();
+    Instant jvmStartInstant = Instant.ofEpochMilli(ManagementFactory.getRuntimeMXBean().getStartTime());
+    sb.append("started  : ").append(OffsetDateTime.ofInstant(jvmStartInstant, ZoneId.systemDefault())).append('\n');
     sb.append("hostname : ").append(InetAddress.getLocalHost().getHostName()).append('\n');
     sb.append("greeting : ").append(greeting).append('\n');
     sb.append("secret   : ").append(secret).append('\n');
