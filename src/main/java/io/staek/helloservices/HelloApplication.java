@@ -26,8 +26,8 @@ public class HelloApplication {
   @SneakyThrows
   @GetMapping(path = "/", produces = MediaType.TEXT_PLAIN_VALUE)
   public String greet(@Value("${hello.greeting:}") String greeting, @Value("${hello.secret:}") String secret) {
-    StringBuilder sb = new StringBuilder();
-    Instant jvmStartInstant = Instant.ofEpochMilli(ManagementFactory.getRuntimeMXBean().getStartTime());
+    var sb = new StringBuilder();
+    var jvmStartInstant = Instant.ofEpochMilli(ManagementFactory.getRuntimeMXBean().getStartTime());
     sb.append("started  : ").append(OffsetDateTime.ofInstant(jvmStartInstant, ZoneId.systemDefault())).append('\n');
     sb.append("hostname : ").append(InetAddress.getLocalHost().getHostName()).append('\n');
     sb.append("greeting : ").append(greeting).append('\n');
